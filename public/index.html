@@ -1,0 +1,57 @@
+<html>
+  <head>
+  <meta http-equiv="content-type" content="text/html; charset=UTF-8" />
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+
+
+  </head>
+  <body>
+  <span></span>
+  
+    <button id="location-button">Get User Location</button>
+    </form>
+    <div id="output"></div>
+    <div id="output1"></div>
+   <div id="out"></div>
+  
+  <script>
+       
+          $('#location-button').click(function(){
+           
+            if (navigator.geolocation) {
+                navigator.geolocation.getCurrentPosition(function(position){
+                  console.log(position.coords.latitude);
+                  
+                  console.log(position.coords.longitude);
+                  const lat=position.coords.latitude;
+                  const long=position.coords.longitude;
+                 
+                $('#output').html(position.coords.latitude);
+                $('#output1').html(position.coords.longitude);
+
+                const data={lat,long};
+                options={
+                  method:'POST',
+                  body: JSON.stringify(data) ,
+                   headers: {
+                    'Content-Type': 'application/json'
+                    // 'Content-Type': 'application/x-www-form-urlencoded',
+                  }
+                }  
+                 
+fetch('/getGeo',options) .then((response) => {
+    return response.json();
+    
+  })
+  .then((data) => {
+    console.log(data);
+    $('#out').html(data.status);
+  }); 
+                
+
+              });
+            }
+          });
+  </script>
+  </body>
+</html>
